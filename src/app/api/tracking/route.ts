@@ -33,11 +33,23 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: "Tracking number is required" }, { status: 400 });
     }
 
-    // Validate carrier exists
-    const [carrier] = await db.select().from(carriers).where(eq(carriers.code, carrierCode)).limit(1);
-    
+    // Validate carrier exists (auto-create known carriers to avoid seeding requirement)
+    const carrierNames = {
+      cjlogistics: "CJ대한통운",
+      lotte: "롯데택배", 
+      hanjin: "한진택배",
+    } as const;
+
+    let [carrier] = await db.select().from(carriers).where(eq(carriers.code, carrierCode)).limit(1);
+
     if (!carrier) {
-      return NextResponse.json({ message: "Carrier not found" }, { status: 404 });
+      [carrier] = await db
+        .insert(carriers)
+        .values({
+          code: carrierCode,
+          name: (carrierNames as Record<string, string>)[carrierCode] || carrierCode,
+        })
+        .returning();
     }
 
     // Get shipment information
