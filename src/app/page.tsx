@@ -29,7 +29,7 @@ export default function Home() {
             <TrackingSearch onSearch={handleSearch} />
           </Card>
           {!queried &&
-          <Card className="p-6 text-sm text-muted-foreground">
+          <Card className="p-6 text-sm !text-black">
               예시: CJ대한통운 123456789012 · 롯데 876543210987 · 한진 110022003300
             </Card>
           }
