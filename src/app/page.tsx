@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import TrackingSearch from "@/components/tracking/TrackingSearch";
@@ -10,7 +10,7 @@ export default function Home() {
   const [result, setResult] = useState<TrackingResult | null>(null);
   const [queried, setQueried] = useState(false);
 
-  function handleSearch({ carrier, trackingNumber }: { carrier: CarrierCode; trackingNumber: string }) {
+  function handleSearch({ carrier, trackingNumber }: {carrier: CarrierCode;trackingNumber: string;}) {
     const r = searchMockTracking(carrier, trackingNumber);
     setResult(r);
     setQueried(true);
@@ -25,20 +25,20 @@ export default function Home() {
           <p className="text-muted-foreground text-sm sm:text-base">
             국내 주요 택배사(CJ대한통운 · 롯데택배 · 한진택배)의 운송장 번호로 현재 위치와 배송 상태를 확인하세요.
           </p>
-          <Card className="p-4">
+          <Card className="p-4 !text-lg">
             <TrackingSearch onSearch={handleSearch} />
           </Card>
-          {!queried && (
-            <Card className="p-6 text-sm text-muted-foreground">
+          {!queried &&
+          <Card className="p-6 text-sm text-muted-foreground">
               예시: CJ대한통운 123456789012 · 롯데 876543210987 · 한진 110022003300
             </Card>
-          )}
+          }
         </div>
       </section>
 
       <section className="container mx-auto max-w-3xl px-4 pb-14 grid gap-6">
         {queried && <TrackingResults result={result} />}
       </section>
-    </div>
-  );
+    </div>);
+
 }
