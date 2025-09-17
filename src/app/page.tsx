@@ -17,7 +17,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen !text-[50px] !block !font-thin">
       <section className="relative isolate overflow-hidden">
         <div className="absolute inset-0 -z-10 bg-center bg-cover opacity-10" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?q=80&w=2070&auto=format&fit=crop')" }} />
         <div className="container mx-auto max-w-3xl px-4 pt-14 pb-8 sm:pt-20 sm:pb-10 grid gap-6 text-center">
