@@ -4,16 +4,35 @@ import React, { useState } from "react";
 import TrackingSearch from "@/components/tracking/TrackingSearch";
 import TrackingResults from "@/components/tracking/TrackingResults";
 import { Card } from "@/components/ui/card";
-import { searchMockTracking, type CarrierCode, type TrackingResult } from "@/lib/tracking/data";
+import { type CarrierCode, type TrackingResult } from "@/lib/tracking/data";
 
 export default function Home() {
   const [result, setResult] = useState<TrackingResult | null>(null);
   const [queried, setQueried] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function handleSearch({ carrier, trackingNumber }: {carrier: CarrierCode;trackingNumber: string;}) {
-    const r = searchMockTracking(carrier, trackingNumber);
-    setResult(r);
-    setQueried(true);
+  async function handleSearch({ carrier, trackingNumber }: {carrier: CarrierCode;trackingNumber: string;}) {
+    try {
+      setError(null);
+      const token = (typeof window !== "undefined" && localStorage.getItem("bearer_token")) || "";
+      const res = await fetch(`/api/tracking?carrier=${carrier}&trackingNumber=${encodeURIComponent(trackingNumber)}` , {
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setResult(null);
+        setError(data?.message || "조회 중 오류가 발생했습니다.");
+      } else {
+        const data: TrackingResult = await res.json();
+        setResult(data ?? null);
+      }
+    } catch (e) {
+      setResult(null);
+      setError("네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+    } finally {
+      setQueried(true);
+    }
   }
 
   return (
@@ -38,6 +57,11 @@ export default function Home() {
 
       <section className="container mx-auto max-w-3xl px-4 pb-14 grid gap-6">
         {queried && <TrackingResults result={result} />}
+        {error && (
+          <Card className="p-6 text-sm text-red-600">
+            {error}
+          </Card>
+        )}
       </section>
     </div>);
 
