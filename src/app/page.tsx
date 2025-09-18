@@ -36,18 +36,18 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen !text-[50px] !block !font-thin">
+    <div className="min-h-screen">
       <section className="relative isolate overflow-hidden">
         <div className="container mx-auto max-w-3xl px-4 pt-14 pb-8 sm:pt-20 sm:pb-10 grid gap-6 text-center">
           <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">택배 조회 서비스</h1>
           <p className="text-muted-foreground text-sm sm:text-base">
             국내 주요 택배사(CJ대한통운 · 롯데택배 · 한진택배)의 운송장 번호로 현재 위치와 배송 상태를 확인하세요.
           </p>
-          <Card className="p-4 !text-lg">
+          <Card className="p-4">
             <TrackingSearch onSearch={handleSearch} />
           </Card>
           {!queried &&
-          <Card className="p-6 text-sm !text-black">
+          <Card className="p-6 text-sm">
               예시: CJ대한통운 123456789012 · 롯데 876543210987 · 한진 110022003300
             </Card>
           }
